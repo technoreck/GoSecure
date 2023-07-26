@@ -39,6 +39,18 @@ document.getElementById("functionalityForm").addEventListener("submit", function
       url = "/screenshot";
       formData.append("url", inputFieldValue);
       break;
+    case "SSLInfo":
+      url = "/sslinfo";
+      formData.append("url", inputFieldValue);
+      break;
+    case "cookie":
+      url = "/cookie";
+      formData.append("url", inputFieldValue);
+      break;
+    case "whois":
+      url = "/whois";
+      formData.append("url", inputFieldValue);
+      break;
     default:
       alert("Please select a functionality.");
       return;
@@ -60,7 +72,109 @@ document.getElementById("functionalityForm").addEventListener("submit", function
         const responseContainer = document.getElementById("responseContainer");
         responseContainer.textContent = "An error occurred: " + error.message;
       });
-  } else {
+  }
+  else if (selectedFunctionality === 'SSLInfo') {
+    fetch(url, {
+      method: "POST",
+      body: formData,
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Server responded with an error status.');
+        }
+        return response.json();
+      })
+      .then(data => {
+        const responseContainer = document.getElementById('responseContainer');
+
+        if (data.error) {
+          // Display error message if there's an error in the response
+          responseContainer.innerHTML = `<p>Error: ${data.error}</p>`;
+        } else if (data.certificates && data.certificates.length > 0) {
+          // Format the SSL information and display it
+          let formatted = '<div class="data-item">';
+          data.certificates.forEach(cert => {
+            formatted += `<strong>Subject:</strong> ${cert.subject}<br>`;
+            formatted += `<strong>Issuer:</strong> ${cert.issuer}<br>`;
+            formatted += `<strong>Valid From:</strong> ${cert.valid_from}<br>`;
+            formatted += `<strong>Valid Until:</strong> ${cert.valid_until}<br>`;
+            formatted += `<strong>Serial Number:</strong> ${cert.serial_number}<br>`;
+            formatted += `<strong>Signature Algorithm:</strong> ${cert.signature_algorithm}<br>`;
+            formatted += `<strong>Key Usage:</strong> ${cert.key_usage}<br>`;
+            formatted += `<strong>Is CA Cert:</strong> ${cert.is_ca_cert}<br>`;
+            if (cert.dns_names && cert.dns_names.length > 0) {
+              formatted += `<strong>DNS Names:</strong> ${cert.dns_names.join(', ')}<br>`;
+            }
+            formatted += '<br>';
+          });
+          formatted += '</div>';
+          responseContainer.innerHTML = formatted;
+        } else {
+          responseContainer.innerHTML = '<p>No SSL information found.</p>';
+        }
+      })
+      .catch(error => {
+        const responseContainer = document.getElementById('responseContainer');
+        responseContainer.innerHTML = 'An error occurred: ' + error.message;
+      });
+  }
+  else if (selectedFunctionality === 'cookie') {
+    fetch(url, {
+      method: "POST",
+      body: formData,
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Server responded with an error status.');
+        }
+        return response.json();
+      })
+      .then(data => {
+        const responseContainer = document.getElementById('responseContainer');
+  
+        if (data.error) {
+          // Display error message if there's an error in the response
+          responseContainer.innerHTML = `<p>Error: ${data.error}</p>`;
+        } else if (data.cookies && data.cookies.length > 0) {
+          // Format the cookie information and display it
+          let formatted = '<div class="data-item">';
+          data.cookies.forEach(cookie => {
+            formatted += `<strong>Name:</strong> ${cookie.name}<br>`;
+            formatted += `<strong>Value:</strong> ${cookie.value}<br>`;
+            formatted += '<br>';
+          });
+          formatted += '</div>';
+          responseContainer.innerHTML = formatted;
+        } else {
+          responseContainer.innerHTML = '<p>No cookies found.</p>';
+        }
+      })
+      .catch(error => {
+        const responseContainer = document.getElementById('responseContainer');
+        responseContainer.innerHTML = 'An error occurred: ' + error.message;
+      });
+  }
+  else if (selectedFunctionality === 'whois') {
+    fetch(url, {
+      method: "POST",
+      body: formData,
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Server responded with an error status.");
+        }
+        return response.json(); // Parse the response as JSON
+      })
+      .then(data => {
+        const responseContainer = document.getElementById("responseContainer");
+        responseContainer.innerHTML = formatWHOISData(data);
+      })
+      .catch(error => {
+        const responseContainer = document.getElementById("responseContainer");
+        responseContainer.textContent = "An error occurred: " + error.message;
+      });
+  }
+  else {
     fetch(url, {
       method: "POST",
       body: formData,
@@ -161,6 +275,30 @@ function formatServerInfoData(data) {
       formatted += `${JSON.stringify(value)}<br>`;
     } else {
       formatted += `<strong>${key}:</strong> ${value}<br>`;
+    }
+  }
+
+  formatted += '</div>';
+  return formatted;
+}
+
+const form = document.getElementById('functionalityForm');
+form.addEventListener('submit', handleFormSubmit);
+
+function formatWHOISData(data) {
+  // Create a formatted HTML representation of the WHOIS information
+  let formatted = '<div class="data-item">';
+
+  // Check if the response contains an "error" field
+  if (data.error) {
+    formatted += `<p>Error: ${data.error}</p>`;
+  } else {
+    // Iterate through the keys and values of the WHOIS data
+    for (const key in data) {
+      if (key !== 'termsOfUse' && key !== 'rawData') { // Exclude the "termsOfUse" and "rawData" fields
+        const value = data[key];
+        formatted += `<strong>${key}:</strong> ${value}<br>`;
+      }
     }
   }
 
