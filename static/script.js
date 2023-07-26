@@ -1,232 +1,169 @@
-document.getElementById("dnsLookupForm").addEventListener("submit", function (event) {
-    event.preventDefault();
-    const hostname = document.getElementById("hostname").value;
+document.getElementById("functionalityForm").addEventListener("submit", function (event) {
+  event.preventDefault(); 
 
-    fetch("/dnsinfo", {
-        method: "POST",
-        body: new URLSearchParams({ hostname }),
+  const selectedFunctionality = document.querySelector('input[name="functionality"]:checked').value;
+  const inputFieldValue = document.getElementById("inputField").value;
+
+  let url;
+  let formData = new FormData();
+
+  switch (selectedFunctionality) {
+    case "dnsLookup":
+      url = "/dnsinfo";
+      formData.append("hostname", inputFieldValue);
+      break;
+    case "getData":
+      url = `/getData?url=${encodeURIComponent(inputFieldValue)}`;
+      break;
+    case "hstsChecker":
+      url = "/hsts";
+      formData.append("url", inputFieldValue);
+      break;
+    case "portScanner":
+      url = "/scan";
+      formData.append("hostname", inputFieldValue);
+      break;
+    case "servstat":
+      url = "/servs";
+      formData.append("url", inputFieldValue);
+      break;
+    case "dns":
+      url = "/resolve";
+      formData.append("url", inputFieldValue);
+      break;
+    case "dnssec":
+      url = "/dnssec";
+      formData.append("url", inputFieldValue);
+      break;
+    case "screenshot":
+      url = "/screenshot";
+      formData.append("url", inputFieldValue);
+      break;
+    default:
+      alert("Please select a functionality.");
+      return;
+  }
+
+  if (selectedFunctionality === "getData") {
+    fetch(url)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Server responded with an error status.");
+        }
+        return response.json();
+      })
+      .then(data => {
+        const responseContainer = document.getElementById("responseContainer");
+        responseContainer.innerHTML = formatData(data);
+      })
+      .catch(error => {
+        const responseContainer = document.getElementById("responseContainer");
+        responseContainer.textContent = "An error occurred: " + error.message;
+      });
+  } else {
+    fetch(url, {
+      method: "POST",
+      body: formData,
     })
-        .then(response => response.json())
-        .then(data => {
-            let result = "";
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Server responded with an error status.");
+        }
+        return response.text();
+      })
+      .then(data => {
+        const responseContainer = document.getElementById("responseContainer");
 
-            for (const key in data) {
-                if (Array.isArray(data[key])) {
-                    const values = data[key].join("<br>");
-                    result += `<div class="data-item"><b>${key}:</b><br>${values}</div>`;
-                } else {
-                    result += `<div class="data-item"><b>${key}:</b> ${data[key]}</div>`;
-                }
-            }
+        try {
+          const jsonData = JSON.parse(data);
 
-            document.getElementById("dnsResponse").innerHTML = result;
-        })
-        .catch(error => {
-            document.getElementById("dnsResponse").textContent = "An error occurred: " + error.message;
-        });
-});
-
-document.getElementById('getDataForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    const url = document.getElementById('url').value;
-
-    fetch(`/getData?url=${encodeURIComponent(url)}`)
-        .then(response => response.json())
-        .then(data => {
-            let formattedData = formatData(data);
-            document.getElementById('getDataResponse').innerHTML = formattedData;
-        })
-        .catch(error => {
-            console.error(error);
-            document.getElementById('getDataResponse').innerText = `Error: ${error.message}`;
-        });
-});
-
-document.getElementById('portScannerForm').addEventListener('submit', async (event) => {
-    event.preventDefault();
-    const form = event.target;
-    const formData = new FormData(form);
-    const response = await fetch('/scan', {
-        method: 'POST',
-        body: formData,
-    });
-    const result = await response.text();
-    document.getElementById('result').innerText = result;
+          switch (selectedFunctionality) {
+            case "dnsLookup":
+            case "hstsChecker":
+            case "servstat":
+            case "dns":
+            case "dnssec":
+              responseContainer.innerHTML = formatData(jsonData);
+              break;
+            case "portScanner":
+              responseContainer.innerHTML = formatPortScannerData(jsonData);
+              break;
+            case "screenshot":
+              responseContainer.innerHTML = `<img src="data:image/png;base64,${jsonData.ScreenshotBase64}" alt="Screenshot">`;
+              break;
+            case "serverInfo":
+              responseContainer.innerHTML = formatServerInfoData(jsonData);
+              break;
+            default:
+              responseContainer.innerHTML = "Invalid functionality.";
+          }
+        } catch (error) {
+          responseContainer.innerHTML = `<div class="data-item">${data}</div>`;
+        }
+      })
+      .catch(error => {
+        const responseContainer = document.getElementById("responseContainer");
+        responseContainer.textContent = "An error occurred: " + error.message;
+      });
+  }
 });
 
 function formatData(data) {
-    let formatted = '';
-    for (let key in data) {
-        let values = Array.isArray(data[key]) ? data[key] : [data[key]];
-        formatted += `<div class="data-item"><strong>${key}:</strong><br>`;
-        values.forEach(value => {
-            formatted += `${value}<br>`;
-        });
-        formatted += '</div>';
-    }
-    return formatted;
-}
-document.getElementById('hstsForm').addEventListener('submit', async (event) => {
-    event.preventDefault(); // Prevent the default form submission behavior.
-    const form = event.target;
-    const formData = new FormData(form);
-    
-    const response = await fetch('/hsts', {
-        method: 'POST',
-        body: formData,
-    });
-    
-    if (response.ok) {
-        try {
-            // Try to parse the response as JSON.
-            const responseData = await response.json();
-
-            // Format the JSON data using the formatData function.
-            const formattedOutput = formatData(responseData);
-
-            // Display the formatted output in an element with the id 'result'.
-            document.getElementById('hstsResult').innerHTML = formattedOutput;
-        } catch (error) {
-            // If parsing as JSON fails, display the response as plain text.
-            const responseText = await response.text();
-            document.getElementById('hstsResult').innerText = responseText;
-        }
-    } else {
-        // Handle non-200 status code (e.g., error response from the server).
-        document.getElementById('hstsResult').innerText = 'Error: Unable to process the request.';
-    }
-});
-
-document.getElementById('servstat').addEventListener('submit', function (event) {
-    event.preventDefault(); // Prevent the default form submission behavior.
-    const url = document.getElementById('url').value;
-    fetch('/servs', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'url=' + encodeURIComponent(url),
-    })
-    .then(response => response.text())
-    .then(data => {
-        document.getElementById('servstatResponse').innerHTML = data; // Display the result in the element with ID "servstatResponse"
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        document.getElementById('servstatResponse').innerText = 'An error occurred during the scan.';
-    });
-});
-
-document.getElementById('dnssecForm').addEventListener('submit', function (event) {
-    event.preventDefault();
-    const urlInput = document.getElementById('dnssecUrl').value;
-    
-    fetch('/dnssec', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'url=' + encodeURIComponent(urlInput),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          const dnssecContainer = document.getElementById('dnssecResponse');
-          dnssecContainer.innerHTML = '';
+  let formatted = '<div class="data-item">';
   
-          if (data.error) {
-            // If there is an error, display it in the response container
-            dnssecContainer.innerHTML = 'Error fetching DNSSEC records: ' + data.error;
-          } else {
-            // If data is received, display RRSIG and DNSKEY records
-            const rrsigRecords = data.RRIGRecords;
-            const dnskeyRecords = data.DNSKEYRecords;
-  
-            // Display RRSIG records
-            dnssecContainer.innerHTML += '<h3>RRSIG Records:</h3>';
-            if (rrsigRecords.length > 0) {
-              for (const rrsigRecord of rrsigRecords) {
-                dnssecContainer.innerHTML += `<p>${JSON.stringify(rrsigRecord)}</p>`;
-              }
-            } else {
-              dnssecContainer.innerHTML += '<p>No RRSIG records found.</p>';
-            }
-  
-            // Display DNSKEY records
-            dnssecContainer.innerHTML += '<h3>DNSKEY Records:</h3>';
-            if (dnskeyRecords.length > 0) {
-              for (const dnskeyRecord of dnskeyRecords) {
-                dnssecContainer.innerHTML += `<p>${JSON.stringify(dnskeyRecord)}</p>`;
-              }
-            } else {
-              dnssecContainer.innerHTML += '<p>No DNSKEY records found.</p>';
-            }
-          }
-        })
-        .catch((error) => {
-          console.error('Error fetching DNSSEC records:', error);
-          const dnssecContainer = document.getElementById('dnssecResponse');
-          dnssecContainer.innerHTML = 'Error fetching DNSSEC records. Please try again later.';
+  if (typeof data === 'object') {
+    if (Array.isArray(data)) {
+      formatted += '<strong>Data Items:</strong><br>';
+      data.forEach(item => {
+        formatted += formatData(item) + '<br>';
       });
-});
-
-document.getElementById('screenshotForm').addEventListener('submit', function (event) {
-    event.preventDefault();
-    const urlInput = document.getElementById('screenshotUrl').value;
-    
-    fetch('/screenshot', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'url=' + encodeURIComponent(urlInput),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          const screenshotContainer = document.getElementById('SSResult');
-          const img = new Image();
-          img.src = 'data:image/png;base64,' + data.ScreenshotBase64;
-          screenshotContainer.innerHTML = '';
-          screenshotContainer.appendChild(img);
-        })
-        .catch((error) => {
-          console.error('Error fetching screenshot:', error);
-          const screenshotContainer = document.getElementById('SSResult');
-          screenshotContainer.innerHTML = 'Error fetching screenshot. Please check the URL and try again.';
-        });
-});
-
-function formatObject(obj, level = 0) {
-    let formattedData = '';
-    for (const key in obj) {
-      const value = obj[key];
-      if (typeof value === 'object' && value !== null) {
-        formattedData += `${'\t'.repeat(level)}${key}\n${formatObject(value, level + 1)}`;
-      } else {
-        formattedData += `${'\t'.repeat(level)}${key}: ${value}\n`;
+    } else {
+      for (let key in data) {
+        formatted += `<strong>${key}:</strong> ${formatData(data[key])}<br>`;
       }
     }
-    return formattedData;
+  } else {
+    formatted += data;
   }
-// Example code for handling the "Server Info" response (dnsForm)
-  const dnsForm = document.getElementById('dnsForm');
-  const dnsResponseContainer = document.getElementById('dnsResponseContainer');
-  
-  dnsForm.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    const formData = new FormData(dnsForm);
-    const url = formData.get('url');
-  
-    try {
-      const response = await fetch('/resolve', {
-        method: 'POST',
-        body: formData,
+
+  formatted += '</div>';
+  return formatted;
+}
+
+function formatPortScannerData(data) {
+  let formatted = '<div class="data-item"><strong>Port Scanner Results:</strong><br>';
+  formatted += JSON.stringify(data);
+  formatted += '</div>';
+  return formatted;
+}
+
+function formatServerInfoData(data) {
+  let formatted = '<div class="data-item"><strong>Server Info:</strong><br>';
+
+  for (let key in data) {
+    let value = data[key];
+
+    if (Array.isArray(value)) {
+      formatted += `<strong>${key}:</strong><br>`;
+      value.forEach(item => {
+        if (typeof item === 'object') {
+          formatted += '<ul>';
+          for (let subKey in item) {
+            formatted += `<li><strong>${subKey}:</strong> ${item[subKey]}</li>`;
+          }
+          formatted += '</ul>';
+        } else {
+          formatted += `${JSON.stringify(item)}<br>`;
+        }
       });
-      const data = await response.json();
-  
-      // Format the nested object data and display it in the response container
-      const formattedData = formatObject(data);
-      dnsResponseContainer.innerHTML = formattedData;
-    } catch (error) {
-      dnsResponseContainer.innerHTML = 'Error occurred while fetching data.';
+    } else if (typeof value === 'object') {
+      formatted += `<strong>${key}:</strong><br>`;
+      formatted += `${JSON.stringify(value)}<br>`;
+    } else {
+      formatted += `<strong>${key}:</strong> ${value}<br>`;
     }
-  });
+  }
+
+  formatted += '</div>';
+  return formatted;
+}

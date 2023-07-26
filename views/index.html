@@ -2,82 +2,29 @@
 <html>
 <head>
     <link rel="stylesheet" href="/static/styles.css">
-    <title>Combined Tool: DNS Lookup, Get Data, and Port Scanner</title>
-    
+    <title>GoSecure: A web framework for all OSINT</title>
 </head>
 <body>
     <h1>Combined Tool: DNS Lookup, Get Data, and Port Scanner</h1>
 
-    <h2>DNS Lookup</h2>
-    <form id="dnsLookupForm" action="/dnsinfo" method="post">
-        <label for="hostname">Hostname:</label>
-        <input type="text" id="hostname" name="hostname" required>
-        <input type="submit" value="Lookup">
-    </form>
-    <div class="response-container" id="dnsResponse"></div>
-
-    <h2>Header Information</h2>
-    <form id="getDataForm" action="/getData" method="post">
-        <label for="url">Enter URL:</label>
-        <input type="text" id="url" name="url" value="https://shunux.me" required>
-        <!-- Example URL provided: https://shunux.me -->
-        <button type="submit">Get Data</button>
-    </form>
-    <div class="response-container" id="getDataResponse"></div>
-
-    <!-- HSTS Checker -->
-    <!-- HSTS Checker -->
-    <h2>HSTS Checker</h2>
-    <form id="hstsForm" action="/hsts" method="post">
-        <label for="hstsUrl">URL:</label>
-        <input type="text" id="hstsUrl" name="url" required>
-        <input type="submit" value="Scan" id="hstsChecker">
-    </form>
-    <div class="response-container" id="hstsResult"></div>
-
-    <!-- Port Scanner -->
-    <h2>Port Scanner</h2>
-    <form id="portScannerForm" action="/scan" method="post">
-        <label for="portHostname">Hostname:</label>
-        <input type="text" id="portHostname" name="hostname" required>
+    <h2>Functionality</h2>
+    <form id="functionalityForm">
+        <input type="radio" name="functionality" value="dnsLookup" required>DNS Lookup
+        <input type="radio" name="functionality" value="getData" required>Header Information
+        <input type="radio" name="functionality" value="hstsChecker" required>HSTS Checker
+        <input type="radio" name="functionality" value="portScanner" required>Port Scanner
+        <input type="radio" name="functionality" value="servstat" required>Server Status
+        <input type="radio" name="functionality" value="dns" required>Server Info
+        <input type="radio" name="functionality" value="dnssec" required>DNSSEC Records
+        <input type="radio" name="functionality" value="screenshot" required>Screenshot
+        <br>
+        <label for="inputField">Enter URL or Hostname:</label>
+        <input type="text" id="inputField" name="inputField" required>
         <input type="submit" value="Scan">
     </form>
-    <div class="response-container" id="result"></div>
 
-    <h2>Server Status</h2>
-    <form id="servstat" action="/servs" method="post">
-        <label for="url">Enter URL:</label>
-        <input type="text" id="url" name="url" required>
-        <input type="submit" value="Scan">
-    </form>
-    <div class="response-container" id="servstatResponse"></div>
-
-    <h2>Server Info</h2>
-    <form id="dnsForm" action="/resolve" method="post">
-        <label for="dnsUrl">Enter URL:</label>
-        <input type="text" id="dnsUrl" name="url" required>
-        <input type="submit" value="Scan">
-    </form>
-    <div class="response-container" id="dnsResponseContainer"></div>
-
-    <h2>DNSSEC Records</h2>
-    <form id="dnssecForm" action="/dnssec" method="post">
-        <label for="dnssecUrl">Enter URL:</label>
-        <input type="text" id="dnssecUrl" name="url" required>
-        <input type="submit" value="Scan">
-    </form>
-    <div class="response-container" id="dnssecResponse"></div>
-
-    <h2>Screenshot</h2>
-    <form id="screenshotForm">
-        <label for="screenshotUrl">Enter URL:</label>
-        <input type="text" id="screenshotUrl" name="url" required>
-        <input type="submit" value="Scan" id="submitBtn">
-    </form>
-    <div class="response-container" id="SSResult"></div>
-
+    <div class="response-container" id="responseContainer"></div>
 
     <script src="/static/script.js"></script>
-
 </body>
 </html>
