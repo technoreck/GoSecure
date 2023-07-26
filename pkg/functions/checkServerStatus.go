@@ -13,7 +13,6 @@ func CheckServerStatus(rawURL string) (string, error) {
 		return "", fmt.Errorf("error parsing URL: %s", err.Error())
 	}
 
-	// Check if scheme (protocol) is missing, and add "http://" as the default scheme
 	if parsedURL.Scheme == "" {
 		parsedURL.Scheme = "http"
 	}

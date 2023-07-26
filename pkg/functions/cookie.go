@@ -12,7 +12,6 @@ type CookieInfo struct {
 	} `json:"cookies"`
 }
 
-// FindCookies retrieves cookie information for the given domain.
 func FindCookies(domain string) (*CookieInfo, error) {
 	client := &http.Client{}
 	url := "https://" + domain

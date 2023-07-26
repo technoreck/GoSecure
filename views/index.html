@@ -5,21 +5,23 @@
     <title>GoSecure: A web framework for all OSINT</title>
 </head>
 <body>
-    <h1>Combined Tool: DNS Lookup, Get Data, and Port Scanner</h1>
+    <h1>GoSecure: A web framework for all web related OSINT</h1>
 
     <h2>Functionality</h2>
     <form id="functionalityForm">
-        <input type="radio" name="functionality" value="dnsLookup" required>DNS Lookup
+        <input type="radio" name="functionality" value="whois" required>WHOIS
         <input type="radio" name="functionality" value="getData" required>Header Information
+        <input type="radio" name="functionality" value="cookie" required>Cookie
         <input type="radio" name="functionality" value="hstsChecker" required>HSTS Checker
         <input type="radio" name="functionality" value="portScanner" required>Port Scanner
-        <input type="radio" name="functionality" value="servstat" required>Server Status
-        <input type="radio" name="functionality" value="dns" required>Server Info
+        <input type="radio" name="functionality" value="dnsLookup" required>DNS Lookup
         <input type="radio" name="functionality" value="dnssec" required>DNSSEC Records
-        <input type="radio" name="functionality" value="screenshot" required>Screenshot
+        <input type="radio" name="functionality" value="dns" required>DNS Server Info
+        <input type="radio" name="functionality" value="servstat" required>Server Status
         <input type="radio" name="functionality" value="SSLInfo" required>SSLInfo
-        <input type="radio" name="functionality" value="cookie" required>Cookie
-        <input type="radio" name="functionality" value="whois" required>WHOIS
+        <input type="radio" name="functionality" value="sitemap" required>Sitemap
+        <input type="radio" name="functionality" value="crawlcheck" required>Crawl Rules
+        <input type="radio" name="functionality" value="screenshot" required>Screenshot
         <br>
         <label for="inputField">Enter URL or Hostname:</label>
         <input type="text" id="inputField" name="inputField" required>

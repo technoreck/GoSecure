@@ -24,7 +24,6 @@ func ScanPorts(hostname string) ([]string, error) {
 	done := make(chan struct{})
 	var results []string
 
-	// Concurrent port scanning for all known ports (0 to 65535)
 	for port := 0; port <= 65535; port++ {
 		go func(port int) {
 			address := fmt.Sprintf("%s:%d", hostname, port)
@@ -37,7 +36,6 @@ func ScanPorts(hostname string) ([]string, error) {
 		}(port)
 	}
 
-	// Wait for all goroutines to finish
 	go func() {
 		for port := 0; port <= 65535; port++ {
 			<-done
@@ -45,14 +43,12 @@ func ScanPorts(hostname string) ([]string, error) {
 		close(openPorts)
 	}()
 
-	timeout := time.After(5 * time.Second) // Total timeout set to 5 seconds
+	timeout := time.After(5 * time.Second)
 
-	// Collect scan results with timeout
 	for {
 		select {
 		case port, ok := <-openPorts:
 			if !ok {
-				// openPorts channel closed, scanning is complete
 				return results, nil
 			}
 			serviceName := knownServices[port]
@@ -62,7 +58,6 @@ func ScanPorts(hostname string) ([]string, error) {
 				results = append(results, fmt.Sprintf("Unknown service (%d)", port))
 			}
 		case <-timeout:
-			// Timeout reached
 			return nil, fmt.Errorf("scanning timeout, some ports may still be unresponsive")
 		}
 	}

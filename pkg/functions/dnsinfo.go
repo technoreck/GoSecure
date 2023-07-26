@@ -33,7 +33,6 @@ type SOAResponse struct {
 func PerformDNSLookup(hostname string) (DNSResponse, error) {
 	resp := DNSResponse{}
 
-	// Lookup A records (IPv4 addresses)
 	addrs, err := net.LookupHost(hostname)
 	if err != nil {
 		return resp, err
@@ -43,7 +42,6 @@ func PerformDNSLookup(hostname string) (DNSResponse, error) {
 		resp.A[i] = net.ParseIP(addr)
 	}
 
-	// Lookup AAAA records (IPv6 addresses)
 	aaaa, err := net.LookupIP(hostname)
 	if err != nil {
 		return resp, err
@@ -54,75 +52,60 @@ func PerformDNSLookup(hostname string) (DNSResponse, error) {
 		}
 	}
 
-	// Lookup MX records (Mail Exchangers)
 	mx, err := net.LookupMX(hostname)
 	if err == nil {
 		resp.MX = mx
 	} else {
-		// Note: MX lookup error is logged but does not result in a response error
 		log.Println("MX lookup error:", err)
 	}
 
-	// Lookup TXT records (Text records)
 	txt, err := net.LookupTXT(hostname)
 	if err == nil {
 		resp.TXT = txt
 	} else {
-		// Note: TXT lookup error is logged but does not result in a response error
 		log.Println("TXT lookup error:", err)
 	}
 
-	// Lookup NS records (Name Servers)
 	ns, err := net.LookupNS(hostname)
 	if err == nil {
 		for _, n := range ns {
 			resp.NS = append(resp.NS, n.Host)
 		}
 	} else {
-		// Note: NS lookup error is logged but does not result in a response error
 		log.Println("NS lookup error:", err)
 	}
 
-	// Lookup CNAME record (Canonical Name)
 	cname, err := net.LookupCNAME(hostname)
 	if err == nil {
 		resp.CNAME = []string{cname}
 	} else {
-		// Note: CNAME lookup error is logged but does not result in a response error
 		log.Println("CNAME lookup error:", err)
 	}
 
-	// Retrieve SOA records using miekg/dns library
 	soa, err := LookupSOA(hostname)
 	if err == nil {
 		resp.SOA = soa
 	} else {
-		// Note: SOA lookup error is logged but does not result in a response error
 		log.Println("SOA lookup error:", err)
 	}
 
-	// Lookup SRV records (Service records)
 	_, srvs, err := net.LookupSRV("", "", hostname)
 	if err == nil {
 		resp.SRV = srvs
 	} else {
-		// Note: SRV lookup error is logged but does not result in a response error
 		log.Println("SRV lookup error:", err)
 	}
 
-	// Lookup PTR records (Reverse DNS lookup)
 	ptr, err := net.LookupAddr(hostname)
 	if err == nil {
 		resp.PTR = ptr
 	} else {
-		// Note: PTR lookup error is logged but does not result in a response error
 		log.Println("PTR lookup error:", err)
 	}
 
 	return resp, nil
 }
 
-// Helper function to perform SOA lookup using miekg/dns library
 func LookupSOA(hostname string) (*SOAResponse, error) {
 	c := new(dns.Client)
 	m := new(dns.Msg)

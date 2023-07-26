@@ -3,6 +3,7 @@ package handlers
 import (
 	"GoSecure/pkg/functions"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"net"
 	"net/http"
@@ -14,7 +15,6 @@ import (
 )
 
 func Handler(c *fiber.Ctx) error {
-	// Get the hostname from the form data submitted in the request body
 	form := new(struct {
 		Hostname string `form:"hostname"`
 	})
@@ -25,7 +25,6 @@ func Handler(c *fiber.Ctx) error {
 
 	hostname := form.Hostname
 
-	// Handle URLs by extracting hostname
 	if strings.HasPrefix(hostname, "http://") || strings.HasPrefix(hostname, "https://") {
 		u, err := url.Parse(hostname)
 		if err != nil {
@@ -34,16 +33,13 @@ func Handler(c *fiber.Ctx) error {
 		hostname = u.Hostname()
 	}
 
-	// Perform DNS lookup using the performDNSLookup function
 	resp, err := functions.PerformDNSLookup(hostname)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).SendString("DNS lookup error")
 	}
 
-	// Set the response Content-Type to application/json
 	c.Set("Content-Type", "application/json")
 
-	// Encode the response object as JSON and send it back to the client
 	return c.JSON(resp)
 }
 
@@ -55,7 +51,6 @@ func Headerhandler(c *fiber.Ctx) error {
 		return c.Status(http.StatusBadRequest).JSON(response)
 	}
 
-	// If the URL does not start with a protocol scheme, add "http://" as the default protocol
 	if !functions.HasProtocolScheme(urlParam) {
 		urlParam = "http://" + urlParam
 	}
@@ -72,13 +67,22 @@ func Headerhandler(c *fiber.Ctx) error {
 
 func ScanHandler(c *fiber.Ctx) error {
 	hostname := c.FormValue("hostname")
+	if hostname == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "You must provide a hostname!",
+		})
+	}
 
 	results, err := functions.ScanPorts(hostname)
 	if err != nil {
-		return c.SendString(err.Error())
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": fmt.Sprintf("Error: %s", err.Error()),
+		})
 	}
 
-	return c.SendString(fmt.Sprintf("Open ports with service names: %v", results))
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"ports": results,
+	})
 }
 
 func HstsHandler(c *fiber.Ctx) error {
@@ -90,7 +94,6 @@ func HstsHandler(c *fiber.Ctx) error {
 		})
 	}
 
-	// Check and add the URL scheme if missing
 	if !strings.HasPrefix(urlString, "http://") && !strings.HasPrefix(urlString, "https://") {
 		urlString = "https://" + urlString
 	}
@@ -115,15 +118,21 @@ func HstsHandler(c *fiber.Ctx) error {
 func Servstatushandler(c *fiber.Ctx) error {
 	url := c.FormValue("url")
 	if url == "" {
-		return c.SendString("You must provide a URL!")
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "You must provide a URL!",
+		})
 	}
 
-	result, err := functions.CheckServerStatus(url)
+	result, err := functions.CheckServerStatus(url) // Assuming CheckServerStatus returns a string.
 	if err != nil {
-		return c.SendString(fmt.Sprintf("Error: %s", err.Error()))
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": fmt.Sprintf("Error: %s", err.Error()),
+		})
 	}
 
-	return c.SendString(result)
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"result": result,
+	})
 }
 
 func Dnssechandler(c *fiber.Ctx) error {
@@ -248,4 +257,62 @@ func WhoisHandler(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(whoisInfo)
+}
+func SitemapHandler(c *fiber.Ctx) error {
+	urlStr := c.FormValue("url")
+	if urlStr == "" {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"error": "URL cannot be empty",
+		})
+	}
+
+	sitemapURL, err := functions.GetSitemapURL(urlStr)
+	if err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	sitemapData, err := functions.FetchSitemap(sitemapURL)
+	if err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	data := functions.ViewData{
+		URL:     urlStr,
+		Sitemap: string(sitemapData),
+	}
+
+	jsonData, err := json.Marshal(data)
+	if err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Failed to marshal data to JSON",
+		})
+	}
+
+	c.Response().Header.SetContentType(fiber.MIMEApplicationJSONCharsetUTF8)
+
+	return c.Send(jsonData)
+}
+
+func Crawlhandler(c *fiber.Ctx) error {
+	siteURL := c.FormValue("siteURL")
+	if siteURL == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Missing url query parameter",
+		})
+	}
+	siteURL = functions.AddSchemaIfMissing(siteURL)
+	robotsTXT, err := functions.FetchRobotsTXT(siteURL)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": fmt.Sprintf("Error fetching robots.txt: %s", err.Error()),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"Crawling Rules ": string(robotsTXT),
+	})
 }

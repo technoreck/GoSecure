@@ -8,19 +8,16 @@ import (
 
 const whoisServer = "whois.iana.org"
 
-// WHOISInfo holds the WHOIS information for a domain.
 type WHOISInfo struct {
 	Data string `json:"data"`
 }
 
-// GetWHOISInfo retrieves the WHOIS information for the given domain.
 func GetWHOISInfo(domain string) (*WHOISInfo, error) {
 	info, err := getWHOISInfo(domain)
 	if err != nil {
 		return nil, err
 	}
 
-	// Remove the unwanted sections from the WHOIS information
 	info = removeUnwantedSections(info)
 
 	return &WHOISInfo{Data: info}, nil
@@ -82,7 +79,6 @@ func getWHOISInfoFromRefServer(domain, refServer string) (string, error) {
 }
 
 func removeUnwantedSections(info string) string {
-	// Define the sections to be removed
 	unwantedSections := []string{
 		"URL of the ICANN Whois Inaccuracy Complaint Form:",
 		">>> Last update of whois database:",
@@ -117,7 +113,6 @@ func removeUnwantedSections(info string) string {
 	lines := strings.Split(info, "\n")
 	var filteredLines []string
 
-	// Iterate through the lines and exclude the unwanted sections
 	for _, line := range lines {
 		includeLine := true
 		for _, unwantedSection := range unwantedSections {

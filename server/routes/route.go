@@ -23,6 +23,8 @@ func SetupRoutes(app *fiber.App) {
 	app.Post("/sslinfo", handlers.SSLhandler)
 	app.Post("/cookie", handlers.CookieHandler)
 	app.Post("/whois", handlers.WhoisHandler)
+	app.Post("/sitemap", handlers.SitemapHandler)
+	app.Post("/crawlcheck", handlers.Crawlhandler)
 
 }
 func Serve() {

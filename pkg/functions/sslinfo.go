@@ -6,13 +6,11 @@ import (
 	"net/http"
 )
 
-// SSLInfo holds SSL certificate information
 type SSLInfo struct {
 	Certificates []*CertificateInfo `json:"certificates"`
 	Error        string             `json:"error,omitempty"`
 }
 
-// CertificateInfo holds information about an SSL certificate
 type CertificateInfo struct {
 	Subject      string   `json:"subject"`
 	Issuer       string   `json:"issuer"`
@@ -25,7 +23,6 @@ type CertificateInfo struct {
 	DNSNames     []string `json:"dns_names"`
 }
 
-// GetSSLInfo retrieves the SSL information for the given domain using a custom HTTP client.
 func GetSSLInfo(domain string) (*SSLInfo, error) {
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},

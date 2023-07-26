@@ -1,3 +1,4 @@
+
 body {
     font-family: Arial, sans-serif;
     background-color: #0b0b0b;
@@ -16,10 +17,13 @@ h2 {
     margin-top: 30px;
 }
 
+.form-container {
+    max-width: 600px; /* Adjust this value to your preference */
+    margin: 0 auto;
+}
+
 form {
     margin-bottom: 20px;
-    display: flex;
-    flex-direction: row;
 }
 
 label {
@@ -28,17 +32,23 @@ label {
     line-height: 35px;
 }
 
+input[type="radio"] {
+    margin-right: 5px;
+}
+
 input[type="text"] {
-    flex: 1;
+    width: 100%; /* Make the input field take up full width */
     padding: 10px;
     border: 1px solid #FFA500;
     border-radius: 5px;
     background-color: #1c1c1c;
     color: #00FF00;
+    margin-bottom: 10px; /* Add spacing between the input field and the next element */
 }
 
-input[type="submit"],
-button[type="submit"] {
+input[type="submit"] {
+    display: block; /* Make the submit button a block-level element to take full width */
+    width: 100%; /* Take up the full width of the parent container */
     padding: 10px 20px;
     background-color: #FFA500;
     border: none;
@@ -49,8 +59,7 @@ button[type="submit"] {
     transition: background-color 0.3s;
 }
 
-input[type="submit"]:hover,
-button[type="submit"]:hover {
+input[type="submit"]:hover {
     background-color: #00FF00;
 }
 
@@ -64,13 +73,14 @@ button[type="submit"]:hover {
     white-space: pre-wrap;
 }
 
-.data-item {
-    border-bottom: 1px solid #FFA500;
-    padding-bottom: 5px;
-    margin-bottom: 5px;
-}
+/* Media Query for responsiveness */
+@media only screen and (max-width: 600px) {
+    body {
+        padding: 10px; /* Reduce padding on smaller screens */
+    }
 
-.separator {
-    border-bottom: 1px solid #FFA500;
-    margin-bottom: 10px;
+    .form-container {
+        max-width: 100%; /* Allow the container to take up full width on smaller screens */
+        padding: 0 10px; /* Add some padding on smaller screens */
+    }
 }
