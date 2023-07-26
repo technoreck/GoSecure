@@ -203,3 +203,49 @@ func Dnsserverhandler(c *fiber.Ctx) error {
 
 	return c.JSON(response)
 }
+
+func SSLhandler(c *fiber.Ctx) error {
+	url := c.FormValue("url")
+	if url == "" {
+		return c.SendString("You must provide a URL!")
+	}
+
+	sslInfo, err := functions.GetSSLInfo(url)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(map[string]interface{}{
+			"error": fmt.Sprintf("Error while fetching SSL Details: %v", err.Error()),
+		})
+	}
+	return c.JSON(sslInfo)
+}
+
+func CookieHandler(c *fiber.Ctx) error {
+	url := c.FormValue("url")
+	if url == "" {
+		return c.SendString("You must provide a URL!")
+	}
+
+	cookieInfo, err := functions.FindCookies(url)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(map[string]interface{}{
+			"error": fmt.Sprintf("Error while fetching cookie: %v", err.Error()),
+		})
+	}
+	return c.JSON(cookieInfo)
+}
+
+func WhoisHandler(c *fiber.Ctx) error {
+	url := c.FormValue("url")
+	if url == "" {
+		return c.SendString("You must provide a URL!")
+	}
+
+	whoisInfo, err := functions.GetWHOISInfo(url)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(map[string]interface{}{
+			"error": fmt.Sprintf("Error fetching WHOIS information: %v", err.Error()),
+		})
+	}
+
+	return c.JSON(whoisInfo)
+}
