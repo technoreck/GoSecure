@@ -19,7 +19,7 @@ GoSecure is brought to you by the following collaborators:
     </td>
     <td align="center">
       <a href="https://github.com/Shunux-Stuxnet">
-        <img src="https://github.com/nitya-nand.png" width="100px;" alt="Nitya Nand Jha"/>
+        <img src="https://github.com/Shunux-Stuxnet.png" width="100px;" alt="Nitya Nand Jha"/>
         <br />
         <sub><b>Nitya Nand Jha</b></sub>
       </a>
