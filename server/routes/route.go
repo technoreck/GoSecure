@@ -18,7 +18,6 @@ func SetupRoutes(app *fiber.App) {
 	app.Post("/hsts", handlers.HstsHandler)
 	app.Post("/servs", handlers.Servstatushandler)
 	app.Post("/dnssec", handlers.Dnssechandler)
-	app.Post("/screenshot", handlers.Screenshothandler)
 	app.Post("/resolve", handlers.Dnsserverhandler)
 	app.Post("/sslinfo", handlers.SSLhandler)
 	app.Post("/cookie", handlers.CookieHandler)
