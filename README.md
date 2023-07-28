@@ -8,6 +8,25 @@ Certainly! Here's the updated README file with a new "Collaborators" section add
 
 GoSecure is brought to you by the following collaborators:
 
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/technoreck">
+        <img src="https://github.com/technoreck.png" width="100px;" alt="Mahendra Kumar"/>
+        <br />
+        <sub><b>Mahendra Kumar</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/nitya-nand">
+        <img src="https://github.com/nitya-nand.png" width="100px;" alt="Nitya Nand Jha"/>
+        <br />
+        <sub><b>Nitya Nand Jha</b></sub>
+      </a>
+    </td>
+  </tr>
+</table>
+
 - Mahendra Kumar ([GitHub](https://github.com/technoreck))
 - Nitya Nand Jha ([GitHub](https://github.com/nitya-nand))
 
