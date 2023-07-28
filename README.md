@@ -35,15 +35,13 @@ GoSecure offers the following functionalities:
 
 8. **Port Scan:** Perform a port scan on the domain to discover open ports and services.
 
-9. **Screenshoter:** Capture screenshots of the domain's web pages for analysis.
+9. **Server Info:** Retrieve detailed information about the web server hosting the domain.
 
-10. **Server Info:** Retrieve detailed information about the web server hosting the domain.
+10. **Sitemap:** Generate and access the sitemap of the domain.
 
-11. **Sitemap:** Generate and access the sitemap of the domain.
+11. **SSL Info:** Check the SSL certificate information and its validity.
 
-12. **SSL Info:** Check the SSL certificate information and its validity.
-
-13. **Whois Info:** Gather registration details and ownership information for the domain.
+12. **Whois Info:** Gather registration details and ownership information for the domain.
 
 ## Installation
 
