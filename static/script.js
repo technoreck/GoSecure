@@ -35,10 +35,6 @@ document.getElementById("functionalityForm").addEventListener("submit", function
       url = "/dnssec";
       formData.append("url", inputFieldValue);
       break;
-    case "screenshot":
-      url = "/screenshot";
-      formData.append("url", inputFieldValue);
-      break;
     case "SSLInfo":
       url = "/sslinfo";
       formData.append("url", inputFieldValue);
@@ -112,9 +108,6 @@ document.getElementById("functionalityForm").addEventListener("submit", function
             case "sitemap":
             case "crawlcheck":
               responseContainer.innerHTML = formatData(jsonData);
-              break;
-            case "screenshot":
-              responseContainer.innerHTML = `<img src="data:image/png;base64,${jsonData.ScreenshotBase64}" alt="Screenshot">`;
               break;
             default:
               responseContainer.innerHTML = "Invalid functionality.";
