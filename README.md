@@ -43,6 +43,26 @@ GoSecure offers the following functionalities:
 
 12. **Whois Info:** Gather registration details and ownership information for the domain.
 
+
+# List of Used Dependency Packages
+
+The following is a list of Go packages used as dependencies in the project:
+
+- [github.com/andybalholm/brotli](https://github.com/andybalholm/brotli) - Brotli compression library for Go
+- [github.com/gobwas/httphead](https://github.com/gobwas/httphead) - Parsing HTTP headers efficiently
+- [github.com/gobwas/pool](https://github.com/gobwas/pool) - Pool utility package
+- [github.com/gobwas/ws](https://github.com/gobwas/ws) - WebSocket implementation for Go
+- [github.com/gofiber/fiber/v2](https://github.com/gofiber/fiber/v2) - Web framework designed for speed
+- [github.com/google/uuid](https://github.com/google/uuid) - Implementation of Universally Unique Identifier (UUID)
+- [github.com/josharian/intern](https://github.com/josharian/intern) - String internment package
+- [github.com/klauspost/compress](https://github.com/klauspost/compress) - Compression packages (snappy, lz4, zstd) for Go
+- [github.com/mailru/easyjson](https://github.com/mailru/easyjson) - Fast JSON serializer for Go
+- [github.com/rivo/uniseg](https://github.com/rivo/uniseg) - Unicode Text Segmentation for Go
+- [github.com/valyala/bytebufferpool](https://github.com/valyala/bytebufferpool) - ByteBuffer pool for Go
+- [github.com/valyala/fasthttp](https://github.com/valyala/fasthttp) - High-performance HTTP implementation for Go
+- [github.com/valyala/tcplisten](https://github.com/valyala/tcplisten) - TCP listener with the ability to pause accepting new connections
+
+
 ## Installation
 
 [Provide instructions on how to install and set up GoSecure. Include any dependencies or prerequisites needed for the tool to function correctly.]
