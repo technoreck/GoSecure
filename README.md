@@ -1,6 +1,15 @@
+Certainly! Here's the updated README file with a new "Collaborators" section added at the beginning:
+
 # GoSecure - Cyber Security Tool with Web Interface
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
+
+## Collaborators
+
+GoSecure is brought to you by the following collaborators:
+
+- Mahendra Kumar ([GitHub](https://github.com/technoreck))
+- Nitya Nand Jha ([GitHub](https://github.com/nitya-nand))
 
 ## Description
 
@@ -64,16 +73,9 @@ We welcome contributions from the community to improve GoSecure. If you'd like t
 
 This project is licensed under the [MIT License](https://github.com/technoreck/GoSecure/blob/main/LICENSE).
 
-Certainly! Here's an updated section to include the developers of the GoSecure project:
-
 ## Credits and Acknowledgments
 
-GoSecure is brought to you by:
-
-- Mahendra Kumar ([GitHub](https://github.com/technoreck))
-- Nitya Nand Jha ([GitHub](https://github.com/shunux-stuxnet))
-
-Special thanks to all the contributors who have helped enhance and improve GoSecure.
+[List any contributors, tools, libraries, or resources that have been used or inspired this project.]
 
 ## FAQ
 
@@ -82,9 +84,10 @@ Special thanks to all the contributors who have helped enhance and improve GoSec
 ## Contact
 
 If you have any questions or feedback, please feel free to reach out to the project maintainers:
-@technoreck
-@shunux-stuxnet
+
+- Mahendra Kumar: @technoreck
+- Nitya Nand Jha: @shunux-stuxnet
 
 ---
 
-With this README, users and potential contributors will have a comprehensive understanding of your GoSecure project, its features, and how to use it effectively. Make sure to keep the README up-to-date as the project evolves and welcome contributions to improve the tool!
+Including a "Collaborators" section in the beginning of the README highlights the individuals who have contributed to the project and gives proper credit to the developers behind GoSecure.
