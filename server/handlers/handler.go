@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"GoSecure/pkg/functions"
-	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"net"
@@ -157,26 +156,7 @@ func Dnssechandler(c *fiber.Ctx) error {
 	return c.JSON(responseData)
 }
 
-func Screenshothandler(c *fiber.Ctx) error {
-	url := c.FormValue("url")
-	if url == "" {
-		return c.SendString("You must provide a URL!")
-	}
-	screenshotData, err := functions.CaptureScreenshot(url)
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(map[string]interface{}{
-			"error": fmt.Sprintf("Error while capturing screenshot: %v", err.Error()),
-		})
-	}
 
-	responseData := struct {
-		ScreenshotBase64 string
-	}{
-		ScreenshotBase64: base64.StdEncoding.EncodeToString(screenshotData),
-	}
-
-	return c.JSON(responseData)
-}
 func Dnsserverhandler(c *fiber.Ctx) error {
 	domain := c.FormValue("url")
 	domain = strings.TrimPrefix(domain, "http://")
