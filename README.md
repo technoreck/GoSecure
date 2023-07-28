@@ -82,10 +82,6 @@ The following is a list of Go packages used as dependencies in the project:
 - [github.com/valyala/tcplisten](https://github.com/valyala/tcplisten) - TCP listener with the ability to pause accepting new connections
 
 
-## Installation
-
-[Provide instructions on how to install and set up GoSecure. Include any dependencies or prerequisites needed for the tool to function correctly.]
-
 ## Usage
 
 1. Clone the repository to your local machine.
@@ -98,9 +94,6 @@ The following is a list of Go packages used as dependencies in the project:
 
 5. Choose from the available functionalities to retrieve the desired information.
 
-## Configuration
-
-[If applicable, provide information about how to configure GoSecure, including any environment variables or settings.]
 
 ## Contributing
 
@@ -110,10 +103,6 @@ We welcome contributions from the community to improve GoSecure. If you'd like t
 
 This project is licensed under the [MIT License](https://github.com/technoreck/GoSecure/blob/main/LICENSE).
 
-## FAQ
-
-[Provide answers to frequently asked questions here if applicable.]
-
 ## Contact
 
 If you have any questions or feedback, please feel free to reach out to the project maintainers:
@@ -122,5 +111,3 @@ If you have any questions or feedback, please feel free to reach out to the proj
 - Nitya Nand Jha: @shunux-stuxnet
 
 ---
-
-Including a "Collaborators" section in the beginning of the README highlights the individuals who have contributed to the project and gives proper credit to the developers behind GoSecure.
