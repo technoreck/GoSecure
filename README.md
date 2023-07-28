@@ -71,10 +71,6 @@ We welcome contributions from the community to improve GoSecure. If you'd like t
 
 This project is licensed under the [MIT License](https://github.com/technoreck/GoSecure/blob/main/LICENSE).
 
-## Credits and Acknowledgments
-
-[List any contributors, tools, libraries, or resources that have been used or inspired this project.]
-
 ## FAQ
 
 [Provide answers to frequently asked questions here if applicable.]
