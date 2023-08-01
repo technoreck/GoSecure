@@ -1,5 +1,3 @@
-Certainly! Here's the updated README file with a new "Collaborators" section added at the beginning:
-
 # GoSecure - Cyber Security Tool with Web Interface
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
