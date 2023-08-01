@@ -2,6 +2,10 @@
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
+<p align="center">
+<img src="https://raw.githubusercontent.com/technoreck/technoreck.github.io/main/images/Black%20and%20White%20Monochrome%20Tech%20Logo.png" width="300" alt="GoSecure Logo">
+</p>
+
 ## Collaborators
 
 GoSecure is brought to you by the following collaborators:
