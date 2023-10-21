@@ -123,6 +123,18 @@ document.getElementById("functionalityForm").addEventListener("submit", function
   }
 });
 
+function simulateDataFetching(selectedFunctionality) {
+  // Simulating fetching data based on the selected functionality
+  const responseData = {
+      functionality: selectedFunctionality,
+      response: "Sample response data for " + selectedFunctionality
+  };
+
+  // Display the response in the response container
+  const responseContainer = document.getElementById("responseContainer");
+  responseContainer.innerHTML = formatData(responseData);
+}
+
 function formatData(data) {
   let formatted = '<div class="data-item">';
 
