@@ -1,86 +1,143 @@
-
 body {
-    font-family: Arial, sans-serif;
-    background-color: #0b0b0b;
-    color: #00FF00;
+    font-family: "Roboto", Arial, sans-serif;
+    background-color: #000; /* Black */
+    color: #eee;
     padding: 20px;
     margin: 0;
 }
 
+.container {
+    max-width: 1000px; /* Increased the max-width */
+    margin: 0 auto;
+}
+
 h1 {
-    color: #FFA500;
+    color: #FF6347; /* Tomato Red */
     text-align: center;
 }
 
 h2 {
-    color: #FFA500;
+    color: #4682B4; /* Steel Blue */
     margin-top: 30px;
 }
 
-.form-container {
-    max-width: 600px; /* Adjust this value to your preference */
-    margin: 0 auto;
-}
-
-form {
+.functionality-box {
+    background-color: #222; /* Darker shade of Black */
+    border-radius: 5px;
+    padding: 20px;
     margin-bottom: 20px;
 }
 
-label {
-    color: #FFA500;
-    margin-right: 10px;
-    line-height: 35px;
+.functionality-options {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.radio-label {
+    margin-right: 20px;
+    margin-bottom: 10px;
+    padding: 8px 15px;
+    border: 2px solid #4682B4; /* Steel Blue */
+    border-radius: 5px;
+    color: #4682B4; /* Steel Blue */
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.radio-label:hover {
+    background-color: #4682B4; /* Steel Blue */
+    color: #333;
+}
+
+.radio-label input[type="radio"]:checked + & {
+    animation: shine 1s ease-in-out infinite;
+}
+
+@keyframes shine {
+    0%, 100% {
+        background-color: #FF6347; /* Tomato Red */
+        color: #eee;
+    }
+    50% {
+        background-color: #4682B4; /* Steel Blue */
+        color: #333;
+    }
 }
 
 input[type="radio"] {
-    margin-right: 5px;
+    display: none;
+}
+
+input[type="radio"]:checked + .radio-label {
+    background-color: #FF6347; /* Tomato Red */
+    color: #eee;
 }
 
 input[type="text"] {
-    width: 100%; /* Make the input field take up full width */
+    flex: 1;
     padding: 10px;
-    border: 1px solid #FFA500;
+    border: 1px solid #4682B4; /* Steel Blue */
     border-radius: 5px;
-    background-color: #1c1c1c;
-    color: #00FF00;
-    margin-bottom: 10px; /* Add spacing between the input field and the next element */
+    background-color: #444; /* Dark Gray */
+    color: #eee;
+    margin-bottom: 10px;
 }
 
-input[type="submit"] {
-    display: block; /* Make the submit button a block-level element to take full width */
-    width: 100%; /* Take up the full width of the parent container */
+.submit-button {
+    display: block;
+    width: 100%;
     padding: 10px 20px;
-    background-color: #FFA500;
+    background-color: #FF6347; /* Tomato Red */
     border: none;
     border-radius: 5px;
-    color: #0b0b0b;
+    color: #333;
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
-input[type="submit"]:hover {
-    background-color: #00FF00;
+.submit-button:hover {
+    background-color: #4682B4; /* Steel Blue */
 }
 
 .response-container {
     margin-top: 20px;
     padding: 20px;
-    border: 1px solid #FFA500;
+    border: 1px solid #FF6347; /* Tomato Red */
     border-radius: 5px;
-    background-color: #1c1c1c;
-    color: #00FF00;
+    background-color: #222; /* Darker shade of Black */
+    color: #eee;
     white-space: pre-wrap;
+}
+
+.response-container span {
+    color: #4682B4; /* Steel Blue */
+}
+
+.response-container strong {
+    color: #FF6347; /* Tomato Red */
 }
 
 /* Media Query for responsiveness */
 @media only screen and (max-width: 600px) {
     body {
-        padding: 10px; /* Reduce padding on smaller screens */
+        padding: 10px;
     }
 
-    .form-container {
-        max-width: 100%; /* Allow the container to take up full width on smaller screens */
-        padding: 0 10px; /* Add some padding on smaller screens */
+    .container {
+        max-width: 100%;
+        padding: 0 10px;
+    }
+
+    .functionality-options {
+        justify-content: center;
+    }
+
+    .input-container {
+        flex-direction: column;
+    }
+
+    input[type="text"] {
+        margin-bottom: 20px;
     }
 }
