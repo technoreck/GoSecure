@@ -2,32 +2,63 @@
 <html>
 <head>
     <link rel="stylesheet" href="/static/styles.css">
-    <title>GoSecure: A web framework for all OSINT</title>
+    <title>GoSecure: A Web Framework for OSINT</title>
 </head>
 <body>
-    <h1>GoSecure: A web framework for all web related OSINT</h1>
+    <div class="container">
+        <h1>GoSecure: A Web Framework for OSINT</h1>
 
-    <h2>Functionality</h2>
-    <form id="functionalityForm">
-        <input type="radio" name="functionality" value="whois" required>WHOIS
-        <input type="radio" name="functionality" value="getData" required>Header Information
-        <input type="radio" name="functionality" value="cookie" required>Cookie
-        <input type="radio" name="functionality" value="hstsChecker" required>HSTS Checker
-        <input type="radio" name="functionality" value="portScanner" required>Port Scanner
-        <input type="radio" name="functionality" value="dnsLookup" required>DNS Lookup
-        <input type="radio" name="functionality" value="dnssec" required>DNSSEC Records
-        <input type="radio" name="functionality" value="dns" required>DNS Server Info
-        <input type="radio" name="functionality" value="servstat" required>Server Status
-        <input type="radio" name="functionality" value="SSLInfo" required>SSLInfo
-        <input type="radio" name="functionality" value="sitemap" required>Sitemap
-        <input type="radio" name="functionality" value="crawlcheck" required>Crawl Rules
-        <br>
-        <label for="inputField">Enter URL or Hostname:</label>
-        <input type="text" id="inputField" name="inputField" required>
-        <input type="submit" value="Scan">
-    </form>
+        <h2>Functionality</h2>
+        <div class="functionality-box">
+            <form id="functionalityForm">
+                <div class="functionality-options">
+                    <label class="radio-label">
+                        <input type="radio" name="functionality" value="whois" required>WHOIS
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="functionality" value="getData" required>Header Information
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="functionality" value="cookie" required>Cookie
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="functionality" value="hstsChecker" required>HSTS Checker
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="functionality" value="portScanner" required>Port Scanner
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="functionality" value="dnsLookup" required>DNS Lookup
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="functionality" value="dnssec" required>DNSSEC Records
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="functionality" value="dns" required>DNS Server Info
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="functionality" value="servstat" required>Server Status
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="functionality" value="SSLInfo" required>SSLInfo
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="functionality" value="sitemap" required>Sitemap
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="functionality" value="crawlcheck" required>Crawl Rules
+                    </label>
+                </div>
 
-    <div class="response-container" id="responseContainer"></div>
+                <br>
+                <label for="inputField">Enter URL or Hostname:</label>
+                <input type="text" id="inputField" name="inputField" required>
+                <input type="submit" value="Scan" class="submit-button">
+            </form>
+        </div>
+
+        <div class="response-container" id="responseContainer"></div>
+    </div>
 
     <script src="/static/script.js"></script>
 </body>
